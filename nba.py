@@ -1,6 +1,7 @@
 from nba_api.stats.endpoints import commonplayerinfo
 import pandas as pd
 import picos
+import numpy as np
 
 """
 headers = {
@@ -39,7 +40,10 @@ dfStat=pd.concat(L)
 
 
 """
-df = pd.read_csv (r'/Users/facundomaleh/Desktop/DatosNBAStat.csv')   #read the csv file (put 'r' before the path string to address any special characters in the path, such as '\'). Don't forget to put the file name at the end of the path + ".csv"
+#df = pd.read_csv (r'/Users/facundomaleh/Desktop/DatosNBAStat.csv')   #read the csv file (put 'r' before the path string to address any special characters in the path, such as '\'). Don't forget to put the file name at the end of the path + ".csv"
+df = pd.read_csv ('DatosNBAStat.csv')
+
+
 
 df.columns = df.columns.str.replace(' ', '')
 print("\n\n", df)
