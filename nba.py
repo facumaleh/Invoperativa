@@ -80,15 +80,16 @@ Center_Foward= CenterFowardPostaDF.to_numpy()
 
 
 
-"""
+
+
 P = picos.Problem()
 x = picos.BinaryVariable('x', len(ab))
 
 #len(ab[0])
+REBOTES = picos.Constant("REBOTES", ab[:,-4].astype(np.float16))
+PUNTOS = picos.Constant("PUNTOS", ab[:,-6].astype(np.float16))
+ASISTENCIAS = picos.Constant("ASISTENCIAS", ab[:,-5].astype(np.float16))
 
-REBOTES= picos.Constant("PUNTOS", ab[:,-4])
-PUNTOS= ab[:,-6]
-ASISTENCIAS= ab[:,-5]
 
 P.set_objective= 0.7* sum( PUNTOS*x)/5 +0.1* sum( REBOTES *x)/5 + 0.2* sum( ASISTENCIAS *x)/5 
 
@@ -102,4 +103,4 @@ P.solve(solver= 'glpk')
 print('x=', x)
 print(P.value)
 
-"""
+
