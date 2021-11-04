@@ -95,9 +95,16 @@ P.add_constraint(sum(x)==5)
 ##promedio minimo de 5 rebotes
 P.add_constraint(sum(REBOTES.T*x)/5>=5)
 ##promedio minimo de 15 puntos
-P.add_constraint(sum(PUNTOS.T*x)/5>=15)
+P.add_constraint(sum(PUNTOS.T*x)/5>=20)
 ##promedio minimo de 3 asistencias
 P.add_constraint(sum(ASISTENCIAS.T*x)/5>=3)
+
+###Ben simmons , D'angelo russell, Jordan Clarkson, Kyle Kuzma, Devin Booker y Blake Griffin
+## no puedn jugar juntos por peleas amorosos
+
+##KD y russ no pueden jugar juntos pq KD se fue de okc y lo dejo solo, russ se enojo con el.
+
+##Joel Embiid - Karl-Anthony Towns
 
 
 
@@ -107,6 +114,7 @@ print(P)
 P.solve(solver= 'glpk')
 
 print('x=', x)
+
 
 
 
