@@ -92,13 +92,18 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 P.set_objective= 0.7* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5 
 
 P.add_constraint(sum(x)==5)
+P.add_constraint(sum(REBOTES.T*x)/5>=5)
+P.add_constraint(sum(PUNTOS.T*x)/5>=15)
+P.add_constraint(sum(ASISTENCIAS.T*x)/5>=3)
+
+
 
 print("/////////////////////////////////////")
-P.options.verbosity=0
+P.options.verbosity=1
 print(P)
 P.solve(solver= 'glpk')
 
 print('x=', x)
-print(P.value)
+
 
 
