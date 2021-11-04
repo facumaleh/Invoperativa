@@ -92,8 +92,11 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 P.set_objective= 0.7* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5 
 
 P.add_constraint(sum(x)==5)
+##promedio minimo de 5 rebotes
 P.add_constraint(sum(REBOTES.T*x)/5>=5)
+##promedio minimo de 15 puntos
 P.add_constraint(sum(PUNTOS.T*x)/5>=15)
+##promedio minimo de 3 asistencias
 P.add_constraint(sum(ASISTENCIAS.T*x)/5>=3)
 
 
