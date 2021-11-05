@@ -4,6 +4,24 @@ import picos
 import numpy as np
 
 """
+El obj del trabajo es encontrar el mejor equipo de la temporada, 
+el mejor equipo de rookies y el mejor equipo de extranjeros de la temporada  
+2019/2020 de la nba mediante la optimizaacion 
+de nuestra funcion objetivo.
+
+La funcion objetivo y restricciones fue fijata por experimentada en este deporte y sus gustos.
+En este caso vamosa maximizar puntos rebotes y asistencias ponderandolos en 0.87 0.1 y 0.2 respectivamente.
+Para tener un equipo balanceado se quieren tener 2 guards, 2 fowards y 1 center.
+Este equipo es ideal para el ritmo de juego de la nba ya que es un deporte muy dinamico 
+y se necesita velocidad. Se quieren 2 bases para poder tner un buen movimiento de balon, 
+2 fowards para generar situaciones de gol y un center  para bajar los rebotes.
+Ademas se queire que el promedio de gol este por arriba de 23, 
+el promedio de rebotes  sea por lo menos de 5 y el promedio de asistenia sea por lo menos 3.
+
+
+"""
+
+"""
 headers = {
     'Host': 'stats.nba.com',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0',
@@ -53,7 +71,7 @@ ab= df.to_numpy()
 
         
 
-##Generamos df para cada cosa
+"""##Generamos df para cada cosa
 UsaDf= pd.DataFrame(df[df.COUNTRY == 'USA'])
 ExtranjerosDF= pd.DataFrame(df[df.COUNTRY != 'USA'])
 RookiesDf= pd.DataFrame(df[df.SEASON_EXP == 1])
@@ -77,10 +95,22 @@ Center= CenterDf.to_numpy()
 Guard= GuardDf.to_numpy()
 Forward_Guard= Forward_GuardDF.to_numpy()
 Center_Foward= CenterFowardPostaDF.to_numpy()
+"""
 
 
+vg=[]
 
+for i in df.POSITION:
 
+    if df.POSITION[i] == "Guard":
+        vg.append(1)
+    else:
+        vg.append(0)
+        
+print(vg)
+#
+
+"""
 P = picos.Problem()
 x = picos.BinaryVariable('x', len(ab))
 
@@ -94,13 +124,15 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
 P.set_objective= 0.7* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5 
 
+##
+
 P.add_constraint(sum(x)==5)
 ##promedio minimo de 5 rebotes
-P.add_constraint(sum(REBOTES.T*x)/5>=5)
+P.add_constraint(sum(REBOTES.T*x)/5>=4)
 ##promedio minimo de 15 puntos
-P.add_constraint(sum(PUNTOS.T*x)/5>=20)
+P.add_constraint(sum(PUNTOS.T*x)/5>=23)
 ##promedio minimo de 3 asistencias
-P.add_constraint(sum(ASISTENCIAS.T*x)/5>=3)
+P.add_constraint(sum(ASISTENCIAS.T*x)/5>=5)
 
 ###Ben simmons , D'angelo russell, Jordan Clarkson, Kyle Kuzma, Devin Booker y Blake Griffin
 ## no puedn jugar juntos por peleas amorosos
@@ -121,13 +153,14 @@ indices = []
 for i, v in enumerate(x):
     if v.value == 1:
         indices.append(i)
+        
 print(indices)
 
-fwd= []
-for i in len(df):
-    if  df.POSITION == 'Guard':
-        fwd.append(i)
-print(fwd)       
-
+eqp=[]
+for i in indices:
+    print(i)
+    eqp.append(ab[i,:])
+#print(eqp)
+"""
 
 
