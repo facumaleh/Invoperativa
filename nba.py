@@ -153,20 +153,15 @@ P.add_constraint(sum(vf*x)==3)
 P.add_constraint(sum(vc*x)==1)
 
 P.add_constraint(sum(x)==5)
-##promedio minimo de 5 rebotes
-P.add_constraint(sum(REBOTES.T*x)/5>=3)
-##promedio minimo de 15 puntos
+##promedio minimo de 3 rebotes
+P.add_constraint(sum(REBOTES.T*x)/5>=4)
+##promedio minimo de 26 puntos
 P.add_constraint(sum(PUNTOS.T*x)/5>=26)
-##promedio minimo de 3 asistencias
-P.add_constraint(sum(ASISTENCIAS.T*x)/5>=5)
+##promedio minimo de 5 asistencias
+P.add_constraint(sum(ASISTENCIAS.T*x)/5>=6)
 
 
-"""Ben simmons , D'angelo russell, Jordan Clarkson, Kyle Kuzma, Devin Booker y Blake Griffin
- no puedn jugar juntos por peleas amorosos
 
-KD y russ no pueden jugar juntos pq KD se fue de okc y lo dejo solo, russ se enojo con el.
-
-Joel Embiid - Karl-Anthony Towns"""
 
 print("/////////////////////////////////////")
 P.options.verbosity=1
@@ -188,6 +183,88 @@ for i in indices:
     print(i)
     eqp.append(ab[i,:])
 print(eqp)
+"""
+##Rookies
+
+RookiesDf= pd.DataFrame(df[df.SEASON_EXP <= 2 ])
+Rookies= RookiesDf.to_numpy()
+
+vgr=[]
+
+for i in range(len(RookiesDf.POSITION)):
+
+    if RookiesDf.POSITION[i] == "Guard" or RookiesDf.POSITION[i] =="Guard-Forward":
+        vgr.append(1)
+    else:
+        vgr.append(0)
+        
+vfr=[]
+
+for i in range(len(df.POSITION)):
+
+    if RookiesDf.POSITION[i] == "Center-Forward" or RookiesDf.POSITION[i] =="Guard-Forward" or RookiesDf.POSITION[i] =="Forward" :
+        vfr.append(1)
+    else:
+        vfr.append(0)
+
+vcr=[]
+
+for i in range(len(RookiesDf.POSITION)):
+
+    if RookiesDf.POSITION[i] == "Center" or RookiesDf.POSITION[i] =="Forward-Center":
+        vcr.append(1)
+    else:
+        vcr.append(0)
+
+P2= picos.Problem()
+x2 = picos.BinaryVariable('x', len(Rookies))
+
+REBOTESR= picos.Constant("REBOTESR", list(Rookies[:,-4]))
+PUNTOSR= picos.Constant("PUNTOSR", list(Rookies[:,-6]))
+ASISTENCIASR= picos.Constant("ASISTENCIASR", list(Rookies[:,-5]))
+
+#PUNTOS= list(ab[:,-6])
+#ASISTENCIAS= list(ab[:,-5])
+
+#P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
+P.set_objective= 0.85 *sum( PUNTOSR.T*x2)/5 +0.05* sum( REBOTESR.T*x2)/5 + 0.1* sum( ASISTENCIASR.T*x2)/5 
+
+
+##Quiero 2 guards
+P.add_constraint(sum(vgr*x2)==1)
+##Quiero 2 guards
+P.add_constraint(sum(vfr*x2)==3)
+##Quiero 1 center
+P.add_constraint(sum(vcr*x2)==1)
+
+P.add_constraint(sum(x2)==5)
+##promedio minimo de 3 rebotes
+P.add_constraint(sum(REBOTES.T*x2)/5>=4)
+##promedio minimo de 26 puntos
+P.add_constraint(sum(PUNTOS.T*x2)/5>=26)
+##promedio minimo de 5 asistencias
+P.add_constraint(sum(ASISTENCIAS.T*x2)/5>=6)
+
+print("/////////////////////////////////////")
+P.options.verbosity=1
+#print(P)
+P.solve(solver= 'glpk')
+
+
+indicesR = []
+for i, v in enumerate(x):
+    if v.value == 1:
+        indicesR.append(i)
+        
+print(indices)
+
+eqpR=[]
+for i in indicesR:
+    print(i)
+    eqpR.append(ab[i,:])
+print(eqpR)
+
+"""
 
 
 
