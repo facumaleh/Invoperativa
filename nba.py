@@ -121,8 +121,13 @@ indices = []
 for i, v in enumerate(x):
     if v.value == 1:
         indices.append(i)
-print(indices)        
+print(indices)
 
+fwd= []
+for i in len(df):
+    if  df.POSITION == 'Guard':
+        fwd.append(i)
+print(fwd)       
 
 
 
