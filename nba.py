@@ -100,17 +100,37 @@ Center_Foward= CenterFowardPostaDF.to_numpy()
 
 vg=[]
 
-for i in df.POSITION:
+for i in range(len(df.POSITION)):
 
-    if df.POSITION[i] == "Guard":
+    if df.POSITION[i] == "Guard" or df.POSITION[i] =="Guard-Forward":
         vg.append(1)
     else:
         vg.append(0)
         
-print(vg)
+vf=[]
+
+for i in range(len(df.POSITION)):
+
+    if df.POSITION[i] == "Center-Forward" or df.POSITION[i] =="Guard-Forward" or df.POSITION[i] =="Forward" :
+        vf.append(1)
+    else:
+        vf.append(0)
+
+
+vc=[]
+
+for i in range(len(df.POSITION)):
+
+    if df.POSITION[i] == "Center" or df.POSITION[i] =="Forward-Center":
+        vc.append(1)
+    else:
+        vc.append(0)
+
+
+        
+
 #
 
-"""
 P = picos.Problem()
 x = picos.BinaryVariable('x', len(ab))
 
@@ -122,9 +142,15 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P.set_objective= 0.7* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5 
+P.set_objective= 0.85* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.05* sum( ASISTENCIAS.T*x)/5 
 
-##
+
+##Quiero 2 guards
+P.add_constraint(sum(x*vg)==2)
+##Quiero 2 guards
+P.add_constraint(sum(x*vf)==2)
+##Quiero 1 center
+P.add_constraint(sum(x*vc)==1)
 
 P.add_constraint(sum(x)==5)
 ##promedio minimo de 5 rebotes
@@ -161,6 +187,6 @@ for i in indices:
     print(i)
     eqp.append(ab[i,:])
 #print(eqp)
-"""
+
 
 
