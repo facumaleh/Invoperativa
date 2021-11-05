@@ -11,10 +11,10 @@ de nuestra funcion objetivo.
 
 La funcion objetivo y restricciones fue fijata por experimentada en este deporte y sus gustos.
 En este caso vamosa maximizar puntos rebotes y asistencias ponderandolos en 0.87 0.1 y 0.2 respectivamente.
-Para tener un equipo balanceado se quieren tener 2 guards, 2 fowards y 1 center.
+Para tener un equipo balanceado se quieren tener 1 guards, 3fowards y 1 center.
 Este equipo es ideal para el ritmo de juego de la nba ya que es un deporte muy dinamico 
-y se necesita velocidad. Se quieren 2 bases para poder tner un buen movimiento de balon, 
-2 fowards para generar situaciones de gol y un center  para bajar los rebotes.
+y se necesita velocidad. Se quiere 1 bases para poder tner un buen movimiento de balon, 
+3 fowards para generar situaciones de gol y un center  para bajar los rebotes.
 Ademas se queire que el promedio de gol este por arriba de 23, 
 el promedio de rebotes  sea por lo menos de 5 y el promedio de asistenia sea por lo menos 3.
 
@@ -68,7 +68,7 @@ df.columns = df.columns.str.replace(' ', '')
 
 ab= df.to_numpy()
 
-
+RookiesDf= pd.DataFrame(df[df.SEASON_EXP == 1])
         
 
 """##Generamos df para cada cosa
@@ -142,30 +142,31 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P.set_objective= 0.85* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.05* sum( ASISTENCIAS.T*x)/5 
+P.set_objective= 0.85 *sum( PUNTOS.T*x)/5 +0.05* sum( REBOTES.T*x)/5 + 0.1* sum( ASISTENCIAS.T*x)/5 
 
 
 ##Quiero 2 guards
-P.add_constraint(sum(x*vg)==2)
+P.add_constraint(sum(vg*x)==1)
 ##Quiero 2 guards
-P.add_constraint(sum(x*vf)==2)
+P.add_constraint(sum(vf*x)==3)
 ##Quiero 1 center
-P.add_constraint(sum(x*vc)==1)
+P.add_constraint(sum(vc*x)==1)
 
 P.add_constraint(sum(x)==5)
 ##promedio minimo de 5 rebotes
-P.add_constraint(sum(REBOTES.T*x)/5>=4)
+P.add_constraint(sum(REBOTES.T*x)/5>=3)
 ##promedio minimo de 15 puntos
-P.add_constraint(sum(PUNTOS.T*x)/5>=23)
+P.add_constraint(sum(PUNTOS.T*x)/5>=26)
 ##promedio minimo de 3 asistencias
 P.add_constraint(sum(ASISTENCIAS.T*x)/5>=5)
 
-###Ben simmons , D'angelo russell, Jordan Clarkson, Kyle Kuzma, Devin Booker y Blake Griffin
-## no puedn jugar juntos por peleas amorosos
 
-##KD y russ no pueden jugar juntos pq KD se fue de okc y lo dejo solo, russ se enojo con el.
+"""Ben simmons , D'angelo russell, Jordan Clarkson, Kyle Kuzma, Devin Booker y Blake Griffin
+ no puedn jugar juntos por peleas amorosos
 
-##Joel Embiid - Karl-Anthony Towns
+KD y russ no pueden jugar juntos pq KD se fue de okc y lo dejo solo, russ se enojo con el.
+
+Joel Embiid - Karl-Anthony Towns"""
 
 print("/////////////////////////////////////")
 P.options.verbosity=1
@@ -186,7 +187,7 @@ eqp=[]
 for i in indices:
     print(i)
     eqp.append(ab[i,:])
-#print(eqp)
+print(eqp)
 
 
 
