@@ -65,6 +65,9 @@ Center_FowardDf=pd.DataFrame(df[df.POSITION == 'Center-Forward'])
 Foward_centerDf=pd.DataFrame(df[df.POSITION == 'Forward-Center'])
 CenterFowardPostaDF = pd.concat([Center_FowardDf, Foward_centerDf], axis=0)
 
+#RookieUsaDf= pd.DataFrame(df[RookiesDf.COUNTRY == 'USA'])
+
+
 ###De df a Numpy
 USA= UsaDf.to_numpy()
 Extranjeros= ExtranjerosDF.to_numpy()
@@ -106,14 +109,19 @@ P.add_constraint(sum(ASISTENCIAS.T*x)/5>=3)
 
 ##Joel Embiid - Karl-Anthony Towns
 
-
-
 print("/////////////////////////////////////")
 P.options.verbosity=1
-print(P)
+#print(P)
 P.solve(solver= 'glpk')
 
-print('x=', x)
+
+#print(0.7* sum( PUNTOS.T*x)/5 +0.1* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5)
+
+indices = []
+for i, v in enumerate(x):
+    if v.value == 1:
+        indices.append(i)
+print(indices)        
 
 
 
