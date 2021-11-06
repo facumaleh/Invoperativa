@@ -142,7 +142,7 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P.set_objective= 0.85 *sum( PUNTOS.T*x)/5 +0.05* sum( REBOTES.T*x)/5 + 0.1* sum( ASISTENCIAS.T*x)/5 
+P.set_objective= 0.5 *sum( PUNTOS.T*x)/5 +0.2* sum( REBOTES.T*x)/5 + 0.3* sum( ASISTENCIAS.T*x)/5 
 
 
 ##Quiero 2 guards
@@ -154,9 +154,9 @@ P.add_constraint(sum(vc*x)==1)
 
 P.add_constraint(sum(x)==5)
 ##promedio minimo de 3 rebotes
-P.add_constraint(sum(REBOTES.T*x)/5>=4)
+P.add_constraint(sum(REBOTES.T*x)/5>=9)
 ##promedio minimo de 26 puntos
-P.add_constraint(sum(PUNTOS.T*x)/5>=26)
+P.add_constraint(sum(PUNTOS.T*x)/5>=27)
 ##promedio minimo de 5 asistencias
 P.add_constraint(sum(ASISTENCIAS.T*x)/5>=6)
 
