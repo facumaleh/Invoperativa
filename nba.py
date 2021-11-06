@@ -142,7 +142,7 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P.set_objective= 0.5 *sum( PUNTOS.T*x)/5 +0.2* sum( REBOTES.T*x)/5 + 0.3* sum( ASISTENCIAS.T*x)/5 
+P.set_objective= 0.6 *sum( PUNTOS.T*x)/5 +0.2* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5 
 
 
 ##Quiero 2 guards
