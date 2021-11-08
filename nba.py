@@ -60,15 +60,10 @@ dfStat=pd.concat(L)
 """
 #df = pd.read_csv (r'/Users/facundomaleh/Desktop/DatosNBAStat.csv')   #read the csv file (put 'r' before the path string to address any special characters in the path, such as '\'). Don't forget to put the file name at the end of the path + ".csv"
 df = pd.read_csv ('DatosNBAStat.csv')
-
-
-
 df.columns = df.columns.str.replace(' ', '')
 #print("\n\n", df)
-
 ab= df.to_numpy()
 
-RookiesDf= pd.DataFrame(df[df.SEASON_EXP == 1])
         
 
 """##Generamos df para cada cosa
@@ -96,7 +91,9 @@ Guard= GuardDf.to_numpy()
 Forward_Guard= Forward_GuardDF.to_numpy()
 Center_Foward= CenterFowardPostaDF.to_numpy()
 """
-
+a=0.5
+b=0.3
+c=0.2
 
 vg=[]
 
@@ -142,7 +139,7 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P.set_objective= 0.6 *sum( PUNTOS.T*x)/5 +0.2* sum( REBOTES.T*x)/5 + 0.2* sum( ASISTENCIAS.T*x)/5 
+P.set_objective= a *sum( PUNTOS.T*x)/5 +b* sum( REBOTES.T*x)/5 + c* sum( ASISTENCIAS.T*x)/5 
 
 
 ##Quiero 2 guards
@@ -183,26 +180,26 @@ for i in indices:
     print(i)
     eqp.append(ab[i,:])
 print(eqp)
-"""
+
 ##Rookies
 
 RookiesDf= pd.DataFrame(df[df.SEASON_EXP <= 2 ])
+RookiesDf.columns = RookiesDf.columns.str.replace(' ', '')
 Rookies= RookiesDf.to_numpy()
 
 vgr=[]
 
 for i in range(len(RookiesDf.POSITION)):
 
-    if RookiesDf.POSITION[i] == "Guard" or RookiesDf.POSITION[i] =="Guard-Forward":
+    if RookiesDf.POSITION.iloc[i] == "Guard" or RookiesDf.POSITION.iloc[i] =="Guard-Forward":
         vgr.append(1)
     else:
         vgr.append(0)
         
 vfr=[]
 
-for i in range(len(df.POSITION)):
-
-    if RookiesDf.POSITION[i] == "Center-Forward" or RookiesDf.POSITION[i] =="Guard-Forward" or RookiesDf.POSITION[i] =="Forward" :
+for i in range(len(RookiesDf.POSITION)):
+    if RookiesDf.POSITION.iloc[i] == "Center-Forward" or RookiesDf.POSITION.iloc[i] =="Guard-Forward" or RookiesDf.POSITION.iloc[i] =="Forward" :
         vfr.append(1)
     else:
         vfr.append(0)
@@ -210,8 +207,7 @@ for i in range(len(df.POSITION)):
 vcr=[]
 
 for i in range(len(RookiesDf.POSITION)):
-
-    if RookiesDf.POSITION[i] == "Center" or RookiesDf.POSITION[i] =="Forward-Center":
+    if RookiesDf.POSITION.iloc[i] == "Center" or RookiesDf.POSITION.iloc[i] =="Forward-Center":
         vcr.append(1)
     else:
         vcr.append(0)
@@ -227,44 +223,43 @@ ASISTENCIASR= picos.Constant("ASISTENCIASR", list(Rookies[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P.set_objective= 0.85 *sum( PUNTOSR.T*x2)/5 +0.05* sum( REBOTESR.T*x2)/5 + 0.1* sum( ASISTENCIASR.T*x2)/5 
+P2.set_objective= a *sum( PUNTOSR.T*x2)/5 +b* sum( REBOTESR.T*x2)/5 + c* sum( ASISTENCIASR.T*x2)/5 
 
 
 ##Quiero 2 guards
-P.add_constraint(sum(vgr*x2)==1)
+P2.add_constraint(sum(vgr*x2)==1)
 ##Quiero 2 guards
-P.add_constraint(sum(vfr*x2)==3)
+P2.add_constraint(sum(vfr*x2)==3)
 ##Quiero 1 center
-P.add_constraint(sum(vcr*x2)==1)
+P2.add_constraint(sum(vcr*x2)==1)
 
-P.add_constraint(sum(x2)==5)
+P2.add_constraint(sum(x2)==5)
 ##promedio minimo de 3 rebotes
-P.add_constraint(sum(REBOTES.T*x2)/5>=4)
+P2.add_constraint(sum(REBOTESR.T*x2)/5>=1)
 ##promedio minimo de 26 puntos
-P.add_constraint(sum(PUNTOS.T*x2)/5>=26)
+P2.add_constraint(sum(PUNTOSR.T*x2)/5>=1)
 ##promedio minimo de 5 asistencias
-P.add_constraint(sum(ASISTENCIAS.T*x2)/5>=6)
+P2.add_constraint(sum(ASISTENCIASR.T*x2)/5>=3)
 
 print("/////////////////////////////////////")
-P.options.verbosity=1
+P2.options.verbosity=1
 #print(P)
-P.solve(solver= 'glpk')
+P2.solve(solver= 'glpk')
 
 
 indicesR = []
-for i, v in enumerate(x):
+for i, v in enumerate(x2):
     if v.value == 1:
         indicesR.append(i)
         
-print(indices)
+print(indicesR)
 
 eqpR=[]
 for i in indicesR:
     print(i)
-    eqpR.append(ab[i,:])
+    eqpR.append(Rookies[i,:])
 print(eqpR)
 
-"""
 
 
 
