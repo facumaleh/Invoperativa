@@ -146,9 +146,9 @@ P.set_objective= a *sum( PUNTOS.T*x)/5 +b* sum( REBOTES.T*x)/5 + c* sum( ASISTEN
 ##Quiero 1 guards
 P.add_constraint(sum(vg*x)==1)
 ##Quiero 3 fowards
-P.add_constraint(sum(vf*x)==2)
+P.add_constraint(sum(vf*x)==3)
 ##Quiero 1 center
-P.add_constraint(sum(vc*x)==2)
+P.add_constraint(sum(vc*x)==1)
 
 P.add_constraint(sum(x)==5)
 ##promedio minimo de 9 rebotes
