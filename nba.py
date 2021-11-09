@@ -91,9 +91,7 @@ Guard= GuardDf.to_numpy()
 Forward_Guard= Forward_GuardDF.to_numpy()
 Center_Foward= CenterFowardPostaDF.to_numpy()
 """
-a=0.5
-b=0.3
-c=0.2
+
 
 vg=[]
 
@@ -139,22 +137,25 @@ ASISTENCIAS= picos.Constant("ASISTENCIAS", list(ab[:,-5]))
 #ASISTENCIAS= list(ab[:,-5])
 
 #P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
+a=0.80
+b=0.10
+c=0.10
 P.set_objective= a *sum( PUNTOS.T*x)/5 +b* sum( REBOTES.T*x)/5 + c* sum( ASISTENCIAS.T*x)/5 
 
 
-##Quiero 2 guards
+##Quiero 1 guards
 P.add_constraint(sum(vg*x)==1)
-##Quiero 2 guards
-P.add_constraint(sum(vf*x)==3)
+##Quiero 3 fowards
+P.add_constraint(sum(vf*x)==2)
 ##Quiero 1 center
-P.add_constraint(sum(vc*x)==1)
+P.add_constraint(sum(vc*x)==2)
 
 P.add_constraint(sum(x)==5)
-##promedio minimo de 3 rebotes
+##promedio minimo de 9 rebotes
 P.add_constraint(sum(REBOTES.T*x)/5>=9)
-##promedio minimo de 26 puntos
+##promedio minimo de 27 puntos
 P.add_constraint(sum(PUNTOS.T*x)/5>=27)
-##promedio minimo de 5 asistencias
+##promedio minimo de 6 asistencias
 P.add_constraint(sum(ASISTENCIAS.T*x)/5>=6)
 
 
@@ -180,86 +181,4 @@ for i in indices:
     print(i)
     eqp.append(ab[i,:])
 print(eqp)
-
-##Rookies
-
-RookiesDf= pd.DataFrame(df[df.SEASON_EXP <= 2 ])
-RookiesDf.columns = RookiesDf.columns.str.replace(' ', '')
-Rookies= RookiesDf.to_numpy()
-
-vgr=[]
-
-for i in range(len(RookiesDf.POSITION)):
-
-    if RookiesDf.POSITION.iloc[i] == "Guard" or RookiesDf.POSITION.iloc[i] =="Guard-Forward":
-        vgr.append(1)
-    else:
-        vgr.append(0)
-        
-vfr=[]
-
-for i in range(len(RookiesDf.POSITION)):
-    if RookiesDf.POSITION.iloc[i] == "Center-Forward" or RookiesDf.POSITION.iloc[i] =="Guard-Forward" or RookiesDf.POSITION.iloc[i] =="Forward" :
-        vfr.append(1)
-    else:
-        vfr.append(0)
-
-vcr=[]
-
-for i in range(len(RookiesDf.POSITION)):
-    if RookiesDf.POSITION.iloc[i] == "Center" or RookiesDf.POSITION.iloc[i] =="Forward-Center":
-        vcr.append(1)
-    else:
-        vcr.append(0)
-
-P2= picos.Problem()
-x2 = picos.BinaryVariable('x', len(Rookies))
-
-REBOTESR= picos.Constant("REBOTESR", list(Rookies[:,-4]))
-PUNTOSR= picos.Constant("PUNTOSR", list(Rookies[:,-6]))
-ASISTENCIASR= picos.Constant("ASISTENCIASR", list(Rookies[:,-5]))
-
-#PUNTOS= list(ab[:,-6])
-#ASISTENCIAS= list(ab[:,-5])
-
-#P.set_objective= 0.7* sum( PUNTOS.T*x)/5 
-P2.set_objective= a *sum( PUNTOSR.T*x2)/5 +b* sum( REBOTESR.T*x2)/5 + c* sum( ASISTENCIASR.T*x2)/5 
-
-
-##Quiero 2 guards
-P2.add_constraint(sum(vgr*x2)==1)
-##Quiero 2 guards
-P2.add_constraint(sum(vfr*x2)==3)
-##Quiero 1 center
-P2.add_constraint(sum(vcr*x2)==1)
-
-P2.add_constraint(sum(x2)==5)
-##promedio minimo de 3 rebotes
-P2.add_constraint(sum(REBOTESR.T*x2)/5>=1)
-##promedio minimo de 26 puntos
-P2.add_constraint(sum(PUNTOSR.T*x2)/5>=1)
-##promedio minimo de 5 asistencias
-P2.add_constraint(sum(ASISTENCIASR.T*x2)/5>=3)
-
-print("/////////////////////////////////////")
-P2.options.verbosity=1
-#print(P)
-P2.solve(solver= 'glpk')
-
-
-indicesR = []
-for i, v in enumerate(x2):
-    if v.value == 1:
-        indicesR.append(i)
-        
-print(indicesR)
-
-eqpR=[]
-for i in indicesR:
-    print(i)
-    eqpR.append(Rookies[i,:])
-print(eqpR)
-
-
-
 
