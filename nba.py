@@ -191,3 +191,18 @@ nba_year_team = [ab2[15], ab2[304], ab2[344], ab2[135], ab2[152]]
 #print(nba_year_team)
 eqp1 = [ab2[568], ab2[304], ab2[486], ab2[624], ab2[163]]
 print(eqp1)
+
+print('AAAA')
+def_ratio_year_team = float(ab2[568, 28])/100*0.1924670433 + float(ab2[304, 28])/100*0.1973634652 + float(ab2[486, 28])/100*0.2035781544 + float(ab2[624, 28])/100*0.204519774 + float(ab2[163, 28])/100*0.2020715631
+def_ratio_eqp1 = float(ab2[15, 28])/100*0.1982320858 + float(ab2[304, 28])/100*0.1971036299 + float(ab2[344, 28])/100*0.1886402106 + float(ab2[135, 28])/100*0.2104570246 + float(ab2[152, 28])/100*0.2055670491
+print('Defensive Ratio Team of the Year:')
+print(def_ratio_year_team)
+print('Defensive Ratio Optimal Team:')
+print(def_ratio_eqp1)
+off_ratio_year_team = float(ab2[568, 27])/100*0.1989159001 + float(ab2[304, 27])/100*0.2132063075 + float(ab2[486, 27])/100*0.205978975 + float(ab2[624, 27])/100*0.1951379763 + float(ab2[163, 27])/100*0.186760841
+off_ratio_eqp1 = float(ab2[15, 27])/100*0.1954988243 + float(ab2[304, 27])/100*0.2180047027 + float(ab2[344, 27])/100*0.1862613369 + float(ab2[135, 27])/100*0.1963385959 + float(ab2[152, 27])/100*0.2038965401
+print('Offensive Ratio Team of the Year:')
+print(off_ratio_year_team)
+print('Offensive Ratio Optimal Team:')
+print(off_ratio_eqp1)
+
