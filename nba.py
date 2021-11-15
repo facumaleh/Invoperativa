@@ -174,11 +174,20 @@ for i, v in enumerate(x):
     if v.value == 1:
         indices.append(i)
         
-print(indices)
+#print(indices)
 
 eqp=[]
 for i in indices:
     print(i)
     eqp.append(ab[i,:])
-print(eqp)
+#print(eqp)
 
+
+df2 = pd.read_csv ('NewNBAset.csv')
+df2.columns = df2.columns.str.replace(' ', '')
+#print("\n\n", df)
+ab2= df2.to_numpy()
+nba_year_team = [ab2[15], ab2[304], ab2[344], ab2[135], ab2[152]]
+#print(nba_year_team)
+eqp1 = [ab2[568], ab2[304], ab2[486], ab2[624], ab2[163]]
+print(eqp1)
