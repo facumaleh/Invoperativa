@@ -206,3 +206,19 @@ print(off_ratio_year_team)
 print('Offensive Ratio Optimal Team:')
 print(off_ratio_eqp1)
 
+print('///Standard Deviations///')
+
+std_def_ratio_year_team = np.std([float(ab2[568, 28]), float(ab2[304, 28]), float(ab2[486, 28]), float(ab2[624, 28]), float(ab2[163, 28])])
+print('Standard Deviation Def Ratio Team of the Year:')
+print(std_def_ratio_year_team)
+std_def_ratio_eqp1 = np.std([float(ab2[15, 28]), float(ab2[304, 28]), float(ab2[344, 28]), float(ab2[135, 28]), float(ab2[152, 28])])
+print('Standard Deviation Def Ratio Optimal Team:')
+print(std_def_ratio_eqp1)
+
+std_off_ratio_year_team = np.std([float(ab2[568, 27]), float(ab2[304, 27]), float(ab2[486, 27]), float(ab2[624, 27]), float(ab2[163, 27])])
+print('Standard Deviation Off Ratio Team of the Year:')
+print(std_off_ratio_year_team)
+std_off_ratio_eqp1 = np.std([float(ab2[15, 27]), float(ab2[304, 27]), float(ab2[344, 27]), float(ab2[135, 27]), float(ab2[152, 27])])
+print('Standard Deviation Off Ratio Optimal Team:')
+print(std_off_ratio_eqp1)
+
