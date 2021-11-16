@@ -216,6 +216,8 @@ std_def_ratio_eqp1 = np.std([float(ab2[15, 28]), float(ab2[304, 28]), float(ab2[
 #print('Standard Deviation Def Ratio Optimal Team:')
 #print(std_def_ratio_eqp1)
 
+
+#STD DEV DE LOS DOS EQUIPOS
 std_off_ratio_year_team = np.std([float(ab2[568, 27]), float(ab2[304, 27]), float(ab2[486, 27]), float(ab2[624, 27]), float(ab2[163, 27])])
 #print('Standard Deviation Off Ratio Team of the Year:')
 #print(std_off_ratio_year_team)
@@ -223,9 +225,15 @@ std_off_ratio_eqp1 = np.std([float(ab2[15, 27]), float(ab2[304, 27]), float(ab2[
 #print('Standard Deviation Off Ratio Optimal Team:')
 #print(std_off_ratio_eqp1)
 
+
+#Es posible hacer 2 o 3 puntos desde el campo
 possible_points = [2, 3]
+
+#arrancan ambos en 0 puntos
 nba_year_points = 0
 eqp1_points = 0
+
+
 for i in range(90):
     att_nba_year_team = np.random.normal(off_ratio_year_team, std_off_ratio_year_team)
     def_eqp1 = np.random.normal(def_ratio_eqp1, std_def_ratio_eqp1)
@@ -247,6 +255,14 @@ for i in range(90):
         maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
         nba_year_points = nba_year_points + 1*float(points)*float(maybe)
         
+
+#Se imprime el score de ambos equipos
+print("/////////////////////////////////////")
+
+print("NBA ALL STAR")
 print(nba_year_points)
+print("UDESA ALL STAR")
 print(eqp1_points)
-        
+
+print("/////////////////////////////////////")
+
