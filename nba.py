@@ -226,19 +226,26 @@ std_off_ratio_eqp1 = np.std([float(ab2[15, 27]), float(ab2[304, 27]), float(ab2[
 possible_points = [2, 3]
 nba_year_points = 0
 eqp1_points = 0
-for i in range(70):
+for i in range(90):
     att_nba_year_team = np.random.normal(off_ratio_year_team, std_off_ratio_year_team)
     def_eqp1 = np.random.normal(def_ratio_eqp1, std_def_ratio_eqp1)
     points = np.random.choice(possible_points, 1, p=(0.6119303656, 0.3880696344))
-    if att_nba_year_team >= 1 and def_eqp1 >= 0:
+    if att_nba_year_team >= 1 and def_eqp1 >= 1:
         nba_year_points = nba_year_points + 1*float(points)
+    elif (att_nba_year_team >= 1 and def_eqp1 >= 0) or (att_nba_year_team >= 0 and def_eqp1 >= 1):
+        maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
+        nba_year_points = nba_year_points + 1*float(points)*float(maybe)
+
         
-for i in range(70):
+for i in range(90):
     def_nba_year_team = np.random.normal(def_ratio_year_team, std_def_ratio_year_team)
     off_eqp1 = np.random.normal(off_ratio_eqp1, std_off_ratio_eqp1)
     points = np.random.choice(possible_points, 1, p=(0.5770846562, 0.4229153438))
-    if def_nba_year_team >= 1 and off_eqp1 >= 0:
+    if def_nba_year_team >= 1 and off_eqp1 >= 1:
         eqp1_points = eqp1_points + 1*float(points)
+    elif (def_nba_year_team >= 1 and off_eqp1 >= 0) or (def_nba_year_team >= 0 and off_eqp1 >= 1):
+        maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
+        nba_year_points = nba_year_points + 1*float(points)*float(maybe)
         
 print(nba_year_points)
 print(eqp1_points)
