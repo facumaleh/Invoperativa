@@ -2,6 +2,7 @@ from nba_api.stats.endpoints import commonplayerinfo
 import pandas as pd
 import picos
 import numpy as np
+import random
 
 """
 El obj del trabajo es encontrar el mejor equipo de la temporada, 
@@ -192,33 +193,53 @@ nba_year_team = [ab2[15], ab2[304], ab2[344], ab2[135], ab2[152]]
 eqp1 = [ab2[568], ab2[304], ab2[486], ab2[624], ab2[163]]
 print(eqp1)
 
-print('AAAA')
+#print('AAAA')
 def_ratio_year_team = float(ab2[568, 28])/100*0.1924670433 + float(ab2[304, 28])/100*0.1973634652 + float(ab2[486, 28])/100*0.2035781544 + float(ab2[624, 28])/100*0.204519774 + float(ab2[163, 28])/100*0.2020715631
 def_ratio_eqp1 = float(ab2[15, 28])/100*0.1982320858 + float(ab2[304, 28])/100*0.1971036299 + float(ab2[344, 28])/100*0.1886402106 + float(ab2[135, 28])/100*0.2104570246 + float(ab2[152, 28])/100*0.2055670491
-print('Defensive Ratio Team of the Year:')
-print(def_ratio_year_team)
-print('Defensive Ratio Optimal Team:')
-print(def_ratio_eqp1)
+#print('Defensive Ratio Team of the Year:')
+#print(def_ratio_year_team)
+#print('Defensive Ratio Optimal Team:')
+#print(def_ratio_eqp1)
 off_ratio_year_team = float(ab2[568, 27])/100*0.1989159001 + float(ab2[304, 27])/100*0.2132063075 + float(ab2[486, 27])/100*0.205978975 + float(ab2[624, 27])/100*0.1951379763 + float(ab2[163, 27])/100*0.186760841
 off_ratio_eqp1 = float(ab2[15, 27])/100*0.1954988243 + float(ab2[304, 27])/100*0.2180047027 + float(ab2[344, 27])/100*0.1862613369 + float(ab2[135, 27])/100*0.1963385959 + float(ab2[152, 27])/100*0.2038965401
-print('Offensive Ratio Team of the Year:')
-print(off_ratio_year_team)
-print('Offensive Ratio Optimal Team:')
-print(off_ratio_eqp1)
+#print('Offensive Ratio Team of the Year:')
+#print(off_ratio_year_team)
+#print('Offensive Ratio Optimal Team:')
+#print(off_ratio_eqp1)
 
-print('///Standard Deviations///')
+#print('///  Standard Deviations///')
 
 std_def_ratio_year_team = np.std([float(ab2[568, 28]), float(ab2[304, 28]), float(ab2[486, 28]), float(ab2[624, 28]), float(ab2[163, 28])])
-print('Standard Deviation Def Ratio Team of the Year:')
-print(std_def_ratio_year_team)
+#print('Standard Deviation Def Ratio Team of the Year:')
+#print(std_def_ratio_year_team)
 std_def_ratio_eqp1 = np.std([float(ab2[15, 28]), float(ab2[304, 28]), float(ab2[344, 28]), float(ab2[135, 28]), float(ab2[152, 28])])
-print('Standard Deviation Def Ratio Optimal Team:')
-print(std_def_ratio_eqp1)
+#print('Standard Deviation Def Ratio Optimal Team:')
+#print(std_def_ratio_eqp1)
 
 std_off_ratio_year_team = np.std([float(ab2[568, 27]), float(ab2[304, 27]), float(ab2[486, 27]), float(ab2[624, 27]), float(ab2[163, 27])])
-print('Standard Deviation Off Ratio Team of the Year:')
-print(std_off_ratio_year_team)
+#print('Standard Deviation Off Ratio Team of the Year:')
+#print(std_off_ratio_year_team)
 std_off_ratio_eqp1 = np.std([float(ab2[15, 27]), float(ab2[304, 27]), float(ab2[344, 27]), float(ab2[135, 27]), float(ab2[152, 27])])
-print('Standard Deviation Off Ratio Optimal Team:')
-print(std_off_ratio_eqp1)
+#print('Standard Deviation Off Ratio Optimal Team:')
+#print(std_off_ratio_eqp1)
 
+possible_points = [2, 3]
+nba_year_points = 0
+eqp1_points = 0
+for i in range(70):
+    att_nba_year_team = np.random.normal(off_ratio_year_team, std_off_ratio_year_team)
+    def_eqp1 = np.random.normal(def_ratio_eqp1, std_def_ratio_eqp1)
+    points = np.random.choice(possible_points, 1, p=(0.6119303656, 0.3880696344))
+    if att_nba_year_team >= 1 and def_eqp1 >= 0:
+        nba_year_points = nba_year_points + 1*float(points)
+        
+for i in range(70):
+    def_nba_year_team = np.random.normal(def_ratio_year_team, std_def_ratio_year_team)
+    off_eqp1 = np.random.normal(off_ratio_eqp1, std_off_ratio_eqp1)
+    points = np.random.choice(possible_points, 1, p=(0.5770846562, 0.4229153438))
+    if def_nba_year_team >= 1 and off_eqp1 >= 0:
+        eqp1_points = eqp1_points + 1*float(points)
+        
+print(nba_year_points)
+print(eqp1_points)
+        
