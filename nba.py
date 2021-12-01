@@ -181,7 +181,7 @@ for i, v in enumerate(x):
 
 eqp=[]
 for i in indices:
-    print(i)
+    #print(i)
     eqp.append(ab[i,:])
 #print(eqp)
 
@@ -191,7 +191,7 @@ df2.columns = df2.columns.str.replace(' ', '')
 #print("\n\n", df)
 ab2= df2.to_numpy()
 nba_year_team = [ab2[15], ab2[304], ab2[344], ab2[135], ab2[152]]
-print(nba_year_team)
+#print(nba_year_team)
 eqp1 = [ab2[568], ab2[304], ab2[486], ab2[624], ab2[163]]
 #print(eqp1)
 
@@ -259,8 +259,10 @@ std_def_ratio_eco = np.std([float(ab2[80, 28]), float(ab2[304, 28]), float(ab2[4
 #Es posible hacer 2 o 3 puntos desde el campo
 possible_points = [2, 3]
 
-n_matches = 40
+n_matches = 600
 n_opportunities = 90
+
+# Partido NBA vs UdeSA
 
 resultados_NBA_vs_udesa = np.zeros((n_matches, 2))
 
@@ -293,25 +295,126 @@ for j in range(n_matches):
             
     resultados_NBA_vs_udesa[j] = [nba_year_points, eqp1_points]
         
-#print(resultados)
-
-plt.plot(resultados_NBA_vs_udesa[:, 0])
-plt.plot(resultados_NBA_vs_udesa[:, 1])
+plt.plot(resultados_NBA_vs_udesa[:, 0], color='red')
+plt.plot(resultados_NBA_vs_udesa[:, 1], color='blue')
 plt.legend(['NBA Year Team', 'UdeSA Team'])
 plt.xlabel('Partidos')
 plt.ylabel('Puntos por partido')
 plt.show()
 
 q_ganados_NBA_vs_udesa = np.zeros(2)
-for i in range(40):
+for i in range(n_matches):
     if resultados_NBA_vs_udesa[i, 0] > resultados_NBA_vs_udesa[i, 1]:
         q_ganados_NBA_vs_udesa[0] = q_ganados_NBA_vs_udesa[0] + 1
     elif resultados_NBA_vs_udesa[i, 0] < resultados_NBA_vs_udesa[i, 1]:
         q_ganados_NBA_vs_udesa[1] = q_ganados_NBA_vs_udesa[1] + 1
 
-plt.bar('NBA Year Team', q_ganados_NBA_vs_udesa[0])
-plt.bar('UdeSA Team', q_ganados_NBA_vs_udesa[1])
+plt.bar('NBA Year Team', q_ganados_NBA_vs_udesa[0], color='red')
+plt.bar('UdeSA Team', q_ganados_NBA_vs_udesa[1], color='blue')
 plt.ylabel('# partidos ganados')
 plt.show()
-#print('Cantidad de partidos ganados por equipo:')
-#print(q_ganados)
+
+
+# Partido Económico vs UdeSA
+
+resultados_eco_vs_udesa = np.zeros((n_matches, 2))
+
+for j in range(n_matches):
+
+    #arrancan ambos en 0 puntos
+    eco_points = 0
+    eqp1_points = 0    
+
+    for i in range(n_opportunities):
+        att_eco = np.random.normal(off_ratio_eco, std_off_ratio_eco)
+        def_eqp1 = np.random.normal(def_ratio_eqp1, std_def_ratio_eqp1)
+        points = np.random.choice(possible_points, 1, p=(eco_2P, eco_3P))
+        if att_eco >= 1 and def_eqp1 >= 1:
+            eco_points = eco_points + 1*float(points)
+        elif (att_eco >= 1 and def_eqp1 < 1) or (att_eco < 1 and def_eqp1 >= 1):
+            maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
+            eco_points = eco_points + 1*float(points)*float(maybe)
+            
+    for i in range(n_opportunities):
+        def_eco = np.random.normal(def_ratio_eco, std_def_ratio_eco)
+        off_eqp1 = np.random.normal(off_ratio_eqp1, std_off_ratio_eqp1)
+        points = np.random.choice(possible_points, 1, p=(eqp1_2P, eqp1_3P))
+        if def_eco >= 1 and off_eqp1 >= 1:
+            eqp1_points = eqp1_points + 1*float(points)
+        elif (def_eco >= 1 and off_eqp1 < 1) or (def_eco < 1 and off_eqp1 >= 1):
+            maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
+            eqp1_points = eqp1_points + 1*float(points)*float(maybe)
+            
+    resultados_eco_vs_udesa[j] = [eco_points, eqp1_points]
+    
+plt.plot(resultados_eco_vs_udesa[:, 0], color='green')
+plt.plot(resultados_eco_vs_udesa[:, 1], color='blue')
+plt.legend(['Economic Team', 'UdeSA Team'])
+plt.xlabel('Partidos')
+plt.ylabel('Puntos por partido')
+plt.show()
+
+q_ganados_eco_vs_udesa = np.zeros(2)
+for i in range(n_matches):
+    if resultados_eco_vs_udesa[i, 0] > resultados_eco_vs_udesa[i, 1]:
+        q_ganados_eco_vs_udesa[0] = q_ganados_eco_vs_udesa[0] + 1
+    elif resultados_eco_vs_udesa[i, 0] < resultados_eco_vs_udesa[i, 1]:
+        q_ganados_eco_vs_udesa[1] = q_ganados_eco_vs_udesa[1] + 1
+
+
+plt.bar('Economic Team', q_ganados_eco_vs_udesa[0], color='green')
+plt.bar('UdeSA Team', q_ganados_eco_vs_udesa[1], color='blue')
+plt.ylabel('# partidos ganados')
+plt.show()
+
+# Partido NBA vs Económico
+
+resultados_NBA_vs_eco = np.zeros((n_matches, 2))
+
+for j in range(n_matches):
+
+    #arrancan ambos en 0 puntos
+    nba_year_points = 0
+    eco_points = 0    
+
+    for i in range(n_opportunities):
+        att_nba_year_team = np.random.normal(off_ratio_year_team, std_off_ratio_year_team)
+        def_eco = np.random.normal(def_ratio_eco, std_def_ratio_eco)
+        points = np.random.choice(possible_points, 1, p=(year_team_2P, year_team_3P))
+        if att_nba_year_team >= 1 and def_eco >= 1:
+            nba_year_points = nba_year_points + 1*float(points)
+        elif (att_nba_year_team >= 1 and def_eco < 1) or (att_nba_year_team < 1 and def_eco >= 1):
+            maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
+            nba_year_points = nba_year_points + 1*float(points)*float(maybe)
+    
+            
+    for i in range(n_opportunities):
+        def_nba_year_team = np.random.normal(def_ratio_year_team, std_def_ratio_year_team)
+        off_eco = np.random.normal(off_ratio_eco, std_off_ratio_eco)
+        points = np.random.choice(possible_points, 1, p=(eco_2P, eco_3P))
+        if def_nba_year_team >= 1 and off_eco >= 1:
+            eco_points = eco_points + 1*float(points)
+        elif (def_nba_year_team >= 1 and off_eco < 1) or (def_nba_year_team < 1 and off_eco >= 1):
+            maybe = np.random.choice([0,1], 1, p=(0.5, 0.5))
+            eco_points = eco_points + 1*float(points)*float(maybe)
+            
+    resultados_NBA_vs_eco[j] = [nba_year_points, eco_points]
+        
+plt.plot(resultados_NBA_vs_eco[:, 0], color='red')
+plt.plot(resultados_NBA_vs_eco[:, 1], color='green')
+plt.legend(['NBA Year Team', 'Economic Team'])
+plt.xlabel('Partidos')
+plt.ylabel('Puntos por partido')
+plt.show()
+
+q_ganados_NBA_vs_eco = np.zeros(2)
+for i in range(n_matches):
+    if resultados_NBA_vs_eco[i, 0] > resultados_NBA_vs_eco[i, 1]:
+        q_ganados_NBA_vs_eco[0] = q_ganados_NBA_vs_eco[0] + 1
+    elif resultados_NBA_vs_eco[i, 0] < resultados_NBA_vs_eco[i, 1]:
+        q_ganados_NBA_vs_eco[1] = q_ganados_NBA_vs_eco[1] + 1
+
+plt.bar('NBA Year Team', q_ganados_NBA_vs_eco[0], color='red')
+plt.bar('Economic Team', q_ganados_NBA_vs_eco[1], color='green')
+plt.ylabel('# partidos ganados')
+plt.show()
