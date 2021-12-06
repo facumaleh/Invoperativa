@@ -259,7 +259,7 @@ std_def_ratio_eco = np.std([float(ab2[80, 28]), float(ab2[304, 28]), float(ab2[4
 #Es posible hacer 2 o 3 puntos desde el campo
 possible_points = [2, 3]
 
-n_matches = 600
+n_matches = 800
 n_opportunities = 90
 
 # Partido NBA vs UdeSA
