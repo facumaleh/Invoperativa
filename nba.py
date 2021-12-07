@@ -186,6 +186,15 @@ for i in indices:
 #print(eqp)
 
 
+
+
+
+## ACÁ EMPIEZA LA SEGUNDA PARTE DE ESTE TRABAJO ##
+
+
+
+
+
 df2 = pd.read_csv ('NewNBAset.csv')
 df2.columns = df2.columns.str.replace(' ', '')
 #print("\n\n", df)
@@ -260,7 +269,7 @@ std_def_ratio_eco = np.std([float(ab2[80, 28]), float(ab2[304, 28]), float(ab2[4
 possible_points = [2, 3]
 
 n_matches = 800
-n_opportunities = 90
+n_opportunities = 60
 
 # Partido NBA vs UdeSA
 
